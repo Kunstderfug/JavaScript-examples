@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Snake game</title>
+    <style>
+      .main p {
+        text-align: center;
+      }
+      .gameover {
+        color: red;
+        font-size: 2.5rem;
+        position: absolute;
+        top: 50px;
+      }
+
+      .newgame {
+        color: red;
+        font-size: 1.5rem;
+        padding-top: 1rem;
+        position: absolute;
+        top: 150px;
+      }
+
+      .newgame:hover {
+        cursor: pointer;
+        border: 1px solid white;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas
+      class="canvas"
+      width="300"
+      height="300"
+      style="background-color: #3e3e3e;"
+    >
+    </canvas>
+    <div class="main">
+      <p class="gameover"></p>
+      <p class="newgame"></p>
+    </div>
+    <script type="text/javascript" src="snake.js"></script>
+    <script type="text/javascript" src="fruit.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+  </body>
+</html>
