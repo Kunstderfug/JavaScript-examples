@@ -15,7 +15,10 @@ scores = [0, 0];
 roundScore = 0;
 activePlayer = 0;
 
-document.querySelector(".dice").style.display = "none";
+let dice1 = document.querySelector("#dice1");
+dice1.style.display = "none";
+let dice2 = document.querySelector("#dice2");
+dice2.style.display = "none";
 
 let player1Score = document.getElementById("score-0");
 player1Score.textContent = "0";
@@ -28,16 +31,71 @@ player2Current.textContent = "0";
 
 let activePlayer1Panel = document.querySelector(".player-0-panel");
 let activePlayer2Panel = document.querySelector(".player-1-panel");
+let btnRoll = document.querySelector(".btn-roll");
 
-function changeActivePlayer() {
+btnRoll.addEventListener("click", function() {
+  //Add the random number
+  let diceRoll1 = Math.floor(Math.random() * 6) + 1;
+  let diceRoll2 = Math.floor(Math.random() * 6) + 1;
+
+  // Display the result
+  dice1.style.display = "block";
+  dice2.style.display = "block";
+  dice1.src = "dice-" + diceRoll1 + ".png";
+  dice2.src = "dice-" + diceRoll2 + ".png";
+
+  if (diceRoll1 === 1 || diceRoll2 === 1) {
+    roundScore = 0; // Reset the current if the dice is 1
+    if (activePlayer === 0) {
+      player1Current.textContent = "0";
+      activePlayer = 1;
+      activePlayer2Panel.setAttribute("class", "player-1-panel active");
+      activePlayer1Panel.setAttribute("class", "player-0-panel");
+    } else {
+      activePlayer = 0;
+      player2Current.textContent = "0";
+      activePlayer1Panel.setAttribute("class", "player-0-panel active");
+      activePlayer2Panel.setAttribute("class", "player-1-panel");
+    }
+  } else {
+    // Update the round score IF the rolled number is not 1
+    let sum = diceRoll1 + diceRoll2;
+    roundScore += sum;
+    if (activePlayer === 0) {
+      player1Current.textContent = roundScore;
+    } else {
+      player2Current.textContent = roundScore;
+    }
+  }
+});
+
+document.querySelector(".btn-hold").addEventListener("click", addScore);
+
+function addScore() {
   if (activePlayer === 0) {
     activePlayer = 1;
+    scores[0] += roundScore;
+    player1Score.textContent = scores[0];
+    roundScore = 0;
+    player1Current.textContent = "0";
     activePlayer2Panel.setAttribute("class", "player-1-panel active");
     activePlayer1Panel.setAttribute("class", "player-0-panel");
   } else {
     activePlayer = 0;
+    scores[1] += roundScore;
+    player2Score.textContent = scores[1];
+    roundScore = 0;
+    player2Current.textContent = "0";
     activePlayer1Panel.setAttribute("class", "player-0-panel active");
     activePlayer2Panel.setAttribute("class", "player-1-panel");
+  }
+
+  if (scores[0] >= 100) {
+    player1Score.textContent = "Won " + scores[0];
+    btnRoll.addEventListener("click", resetGame);
+  } else if (scores[1] >= 100) {
+    player2Score.textContent = "Won " + scores[1];
+    btnRoll.addEventListener("click", resetGame);
   }
 }
 
@@ -51,55 +109,8 @@ function resetGame() {
   player1Current.textContent = "0";
   player2Current.textContent = "0";
   activePlayer = 0;
-  document.querySelector(".dice").style.display = "none";
+  document.querySelector(".dice1").style.display = "none";
+  document.querySelector(".dice2").style.display = "none";
   activePlayer1Panel.setAttribute("class", "player-0-panel active");
   activePlayer2Panel.setAttribute("class", "player-1-panel");
 }
-
-document.querySelector(".btn-roll").addEventListener("click", function() {
-  //Add the random number
-  let dice = Math.floor(Math.random() * 6) + 1;
-
-  // Display the result
-  let diceDOM = document.querySelector(".dice");
-  diceDOM.style.display = "block";
-  diceDOM.src = "dice-" + dice + ".png";
-
-  if (dice === 1) {
-    if (activePlayer === 0) {
-      // Reset the current if the dice is 1
-      player1Score.textContent = "0";
-      activePlayer = 1;
-      scores[0] = 0;
-      player1Current.textContent = scores[0];
-      activePlayer2Panel.setAttribute("class", "player-1-panel active");
-      activePlayer1Panel.setAttribute("class", "player-0-panel");
-    } else {
-      // Update the round score IF the rolled number is not 1
-      player2Score.textContent = "0";
-      activePlayer = 0;
-      scores[1] = 0;
-      player2Current.textContent = scores[1];
-      activePlayer1Panel.setAttribute("class", "player-0-panel active");
-      activePlayer2Panel.setAttribute("class", "player-1-panel");
-    }
-  } else if (activePlayer === 0 && dice !== 1) {
-    player1Score.textContent = dice;
-    scores[0] += dice;
-    player1Current.textContent = scores[0];
-  } else {
-    player2Score.textContent = dice;
-    scores[1] += dice;
-    player2Current.textContent = scores[1];
-  }
-
-  if (scores[0] >= 100) {
-    player1Score.textContent = "Player One Won";
-  } else if (scores[1] >= 100) {
-    player2Score.textContent = "Player Two Won";
-  }
-});
-
-document
-  .querySelector(".btn-hold")
-  .addEventListener("click", changeActivePlayer);
