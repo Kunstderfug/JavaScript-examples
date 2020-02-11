@@ -1,0 +1,67 @@
+* {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.carousel-container {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  width: 70vw;
+  margin: auto;
+  border: 2px solid black;
+  overflow: hidden;
+}
+
+.carousel-slide {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: auto;
+  height: 60vh;
+}
+
+.carousel-slide img {
+  width: 100%;
+  -o-object-position: center;
+     object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+#prevButton {
+  position: absolute;
+  top: 40%;
+  left: 5%;
+  background: none;
+  font-size: 5rem;
+  color: rgba(255, 255, 255, 0.671);
+  border: none;
+}
+
+#prevButton:hover {
+  cursor: pointer;
+  color: white;
+  outline: none;
+}
+
+#nextButton {
+  position: absolute;
+  top: 40%;
+  right: 5%;
+  background: none;
+  font-size: 5rem;
+  color: rgba(255, 255, 255, 0.671);
+  border: none;
+}
+
+#nextButton:hover {
+  cursor: pointer;
+  color: white;
+  outline: none;
+}
+/*# sourceMappingURL=style.css.map */
