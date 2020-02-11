@@ -57,8 +57,30 @@
         <i class="ion-ios-download-outline"></i>Hold
       </button>
 
-      <img src="dice-5.png" id="dice1" alt="Dice" class="dice1" />
-      <img src="dice-5.png" id="dice2" alt="Dice" class="dice2" />
+      <div class="num-dice">
+        <p class="num-dice-item number" id="1-dice">
+          <img src="dice-1.png" alt="Dice" width="100" />
+        </p>
+        <p class="num-dice-item">Choose</p>
+        <p class="num-dice-item number" id="2-dice">
+          <img src="dice-2.png" alt="Dice" width="100" /><img
+            src="dice-3.png"
+            alt="Dice"
+            width="100"
+          />
+        </p>
+        <input
+          type="number"
+          name="set-win-score"
+          id="winningScore"
+          placeholder="100 (default)"
+          value=""
+        />
+        <label for="set-win-score" id="setScore">Set the winning number</label>
+      </div>
+      <img src="dice-5.png" id="dice-0" alt="Dice" class="dice hidden" />
+      <img src="dice-5.png" id="dice-1" alt="Dice" class="dice1 hidden" />
+      <img src="dice-5.png" id="dice-2" alt="Dice" class="dice2 hidden" />
     </div>
 
     <script src="app.js"></script>

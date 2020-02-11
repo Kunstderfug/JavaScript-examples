@@ -9,108 +9,86 @@ GAME RULES:
 
 */
 
-let scores, roundScore, activePlayer;
+// Game variables
+let scores, roundScore, activePlayer, isGamePlaying;
 
-scores = [0, 0];
-roundScore = 0;
-activePlayer = 0;
+let dice0 = document.getElementById("dice-0");
+let dice1 = document.getElementById("dice-1");
+let dice2 = document.getElementById("dice-2");
 
-let dice1 = document.querySelector("#dice1");
-dice1.style.display = "none";
-let dice2 = document.querySelector("#dice2");
-dice2.style.display = "none";
+let currentScore = document.getElementById("current-" + activePlayer);
 
-let player1Score = document.getElementById("score-0");
-player1Score.textContent = "0";
-let player2Score = document.getElementById("score-1");
-player2Score.textContent = "0";
-let player1Current = document.getElementById("current-0");
-player1Current.textContent = "0";
-let player2Current = document.getElementById("current-1");
-player2Current.textContent = "0";
+let rollDice = document.querySelector(".btn-roll");
 
-let activePlayer1Panel = document.querySelector(".player-0-panel");
-let activePlayer2Panel = document.querySelector(".player-1-panel");
-let btnRoll = document.querySelector(".btn-roll");
+let winningScore = 100;
 
-btnRoll.addEventListener("click", function() {
-  //Add the random number
-  let diceRoll1 = Math.floor(Math.random() * 6) + 1;
-  let diceRoll2 = Math.floor(Math.random() * 6) + 1;
+// Initial setup
+function gameStart() {
+  scores = [0, 0];
+  roundScore = 0;
+  activePlayer = 0;
+  document.getElementById("score-0").textContent = "0";
+  document.getElementById("score-1").textContent = "0";
+  document.getElementById("current-0").textContent = "0";
+  document.getElementById("current-1").textContent = "0";
 
-  // Display the result
-  dice1.style.display = "block";
-  dice2.style.display = "block";
-  dice1.src = "dice-" + diceRoll1 + ".png";
-  dice2.src = "dice-" + diceRoll2 + ".png";
+  //Hides the initial settings window
+  document.querySelector(".num-dice").classList.add("hidden");
+  isGamePlaying = true;
 
-  if (diceRoll1 === 1 || diceRoll2 === 1) {
-    roundScore = 0; // Reset the current if the dice is 1
-    if (activePlayer === 0) {
-      player1Current.textContent = "0";
-      activePlayer = 1;
-      activePlayer2Panel.setAttribute("class", "player-1-panel active");
-      activePlayer1Panel.setAttribute("class", "player-0-panel");
-    } else {
-      activePlayer = 0;
-      player2Current.textContent = "0";
-      activePlayer1Panel.setAttribute("class", "player-0-panel active");
-      activePlayer2Panel.setAttribute("class", "player-1-panel");
-    }
+  // Winning score setup
+  winningScore = Number(document.getElementById("winningScore").value);
+  winningScore !== 0 ? (winningScore = winningScore) : (winningScore = 100);
+  if (oneDice) {
+    console.log("one-dice game, " + winningScore);
   } else {
-    // Update the round score IF the rolled number is not 1
-    let sum = diceRoll1 + diceRoll2;
-    roundScore += sum;
-    if (activePlayer === 0) {
-      player1Current.textContent = roundScore;
-    } else {
-      player2Current.textContent = roundScore;
-    }
-  }
-});
-
-document.querySelector(".btn-hold").addEventListener("click", addScore);
-
-function addScore() {
-  if (activePlayer === 0) {
-    activePlayer = 1;
-    scores[0] += roundScore;
-    player1Score.textContent = scores[0];
-    roundScore = 0;
-    player1Current.textContent = "0";
-    activePlayer2Panel.setAttribute("class", "player-1-panel active");
-    activePlayer1Panel.setAttribute("class", "player-0-panel");
-  } else {
-    activePlayer = 0;
-    scores[1] += roundScore;
-    player2Score.textContent = scores[1];
-    roundScore = 0;
-    player2Current.textContent = "0";
-    activePlayer1Panel.setAttribute("class", "player-0-panel active");
-    activePlayer2Panel.setAttribute("class", "player-1-panel");
-  }
-
-  if (scores[0] >= 100) {
-    player1Score.textContent = "Won " + scores[0];
-    btnRoll.addEventListener("click", resetGame);
-  } else if (scores[1] >= 100) {
-    player2Score.textContent = "Won " + scores[1];
-    btnRoll.addEventListener("click", resetGame);
+    console.log("two-dice game, " + winningScore);
   }
 }
 
-let resetButton = document.querySelector(".btn-new");
-resetButton.addEventListener("click", resetGame);
+// Choice of one or two dices
+let oneDice = false;
+
+document.getElementById("1-dice").addEventListener("click", function() {
+  oneDice = true;
+  gameStart();
+});
+
+let twoDice = document.getElementById("2-dice");
+twoDice.addEventListener("click", gameStart);
+
+// Start the game by rolling the dice
+rollDice.addEventListener("click", rollDiceFunction);
+
+function rollDiceFunction() {
+  if (oneDice) {
+    // console.log("you started the game with one dice");
+    let diceZero = Math.floor(Math.random() * 6 + 1);
+    dice0.src = "dice-" + diceZero + ".png";
+    dice0.classList.remove("hidden");
+    roundScore += diceZero;
+    currentScore.textContent = roundScore;
+  } else {
+    // console.log("you started the game with two dices");
+    let diceOne = Math.floor(Math.random() * 6 + 1);
+    let diceTwo = Math.floor(Math.random() * 6 + 1);
+    let sum = diceOne + diceTwo;
+    dice1.src = "dice-" + diceOne + ".png";
+    dice2.src = "dice-" + diceTwo + ".png";
+    dice1.classList.remove("hidden");
+    dice2.classList.remove("hidden");
+    roundScore += sum;
+    currentScore.textContent = roundScore;
+  }
+}
+
+let newGame = document.querySelector(".btn-new");
+newGame.addEventListener("click", resetGame);
 
 function resetGame() {
-  scores = [0, 0];
-  player1Score.textContent = "0";
-  player2Score.textContent = "0";
-  player1Current.textContent = "0";
-  player2Current.textContent = "0";
-  activePlayer = 0;
-  document.querySelector(".dice1").style.display = "none";
-  document.querySelector(".dice2").style.display = "none";
-  activePlayer1Panel.setAttribute("class", "player-0-panel active");
-  activePlayer2Panel.setAttribute("class", "player-1-panel");
+  document.querySelector(".num-dice").classList.remove("hidden");
+  dice0.classList.add("hidden");
+  dice1.classList.add("hidden");
+  dice2.classList.add("hidden");
+  oneDice = false;
 }
