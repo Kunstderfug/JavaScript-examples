@@ -1,178 +1,159 @@
-// // Function constractor
+/* let slav = {
+  name: "Slav",
+  job: "concert pianist and arranger",
+  birthYear: 1982,
+  age: function () {
+    return new Date().getFullYear() - this.birthYear;
+  },
+  workStart: 14,
+  exp: function () {
+    return this.age() - this.workStart;
+  },
+  greeting: function (style, timeOfDay) {
+    if (style === "formal") {
+      return `Good ${timeOfDay}, ladies and gentelmen. My name is ${
+        this.name
+      }. I am ${this.age()} years old and have been working as a ${
+        this.job
+      } for more than ${this.exp()} years.`;
+    } else if (style === "casual") {
+      return `What's up guys? My name is ${
+        this.name
+      }. I am ${this.age()} years old and have been working as a ${
+        this.job
+      } for more than ${this.exp()} years. Have a nice ${timeOfDay}!`;
+    }
+  },
+};
 
-// const Person = function(name, yearOfBirth, job) {
-//   this.name = name;
-//   this.yearOfBirth = yearOfBirth;
-//   this.job = job;
-// };
+let emily = {
+  name: "Emily",
+  job: "singer and songwriter",
+  birthYear: 1998,
+  age: slav.age,
+  workStart: 12,
+  exp: slav.exp,
+  // greeting: slav.greeting,
+};
 
-// Person.prototype.calculateAge = function() {
-//   console.log(2020 - this.yearOfBirth);
-// };
+slav.greeting("casual", "evening");
 
-// let john = new Person("John", 1990, "teacher");
-// let mark = new Person("Mark", 1957, "retired");
-// let jane = new Person("Jane", 1998, "prostitute");
+slav.greeting.call(emily, "formal", "morning");
 
-// john.calculateAge();
-// mark.calculateAge();
-// jane.calculateAge();
+const slavFriendly = slav.greeting.bind(slav, "casual");
+const emilyFormal = slav.greeting.bind(emily, "formal");
+/* console.log(slavFriendly("evening"));
+console.log(emilyFormal("morning")); 
 
-//Primitives & objects
+const years = [1990, 1967, 2000, 2006, 1982, 2010, 1998, 2002];
+const arrCalc = (arr, fn) => arr.map((item) => fn(item));
+const ageCalc = (el) => new Date().getFullYear() - el;
+const isFullAge = (limit, age) => age >= limit;
+/* let ages = arrCalc(years, ageCalc);
+console.log(ages);
 
-// Passing functions as arguments
-/*
-let years = [1990, 1965, 1937, 2005, 1998];
+let fullAgeJapan = arrCalc(ages, isFullAge.bind(this, 20));
+console.log(fullAgeJapan);
+let fullAgeUsa = arrCalc(ages, isFullAge.bind(this, 18));
+console.log(fullAgeUsa); */
 
-function arrayCalc(arr, fn) {
-  let arrRes = [];
-  arr.forEach(element => {
-    arrRes.push(fn(element));
-  });
-  return arrRes;
-}
+//Quiz Game
 
-function calcAge(el) {
-  let currentDate = new Date().getFullYear();
-  return currentDate - el;
-}
+(function () {
+  //function constructor
+  function Question(question, answers, correct) {
+    this.question = question;
+    this.answers = answers;
+    this.correct = correct;
+  }
 
-function isFullAge(el) {
-  return el >= 18;
-}
+  //Questions
+  const q1 = new Question(
+    "Is JavaScript is the most popular language?",
+    ["no", "yes"],
+    1
+  );
+  const q2 = new Question(
+    "Who is your daddy?",
+    ["I am your daddy", "You are my daddy", "I have several daddies"],
+    0
+  );
+  const q3 = new Question(
+    "Who is the teacher of this course?",
+    ["Bess", "Mess", "Kiss", "Jonas"],
+    3
+  );
+  const q4 = new Question(
+    "In which country you date the most beautiful girls?",
+    ["USA", "China", "Russia"],
+    1
+  );
 
-function maxHRate(el) {
-  return Math.round(206.9 - 0.67 * el);
-}
+  const questions = [q1, q2, q3, q4];
+  let userScore = 0;
 
-let ages = arrayCalc(years, calcAge);
-let fullAges = arrayCalc(ages, isFullAge);
-let maxHeartRate = arrayCalc(ages, maxHRate);
-*/
-
-// CLOSURES
-/*
-function retirement(retAge) {
-  let a = " years left until retirement";
-  let currentYear = new Date().getFullYear();
-  return function(birthYear) {
-    let age = currentYear - birthYear;
-    console.log(retAge - age + a);
+  // Initial setup
+  Question.prototype.displayQuestion = function () {
+    console.log(`=================\n${this.question}`);
+    let count = 0;
+    this.answers.map((answer) => console.log(`${count++}: ${answer}`));
   };
-}
 
-let retUS = retirement(66);
-retirement(60)(1982);
+  Question.prototype.checkAnswer = function (ans, callback) {
+    const rightAnswer = this.correct;
+    let sc;
 
-function intQ(job) {
-  const desQ = ", can you please explain what UX design is?";
-  const teaQ = "What subject do you teach, ";
-  const musQ = ", what music do you like?";
-  const defQ = ", what do you do?";
-
-  return function(name) {
-    if (job === "designer") {
-      console.log(name + desQ);
-    } else if (job === "teacher") {
-      console.log(name + teaQ + "?");
-    } else if (job === "musician") {
-      console.log(name + musQ);
+    if (Number(ans) === rightAnswer) {
+      // userScore++;
+      sc = callback(true);
+      console.log(
+        `-----------\nThe right answer is number ${rightAnswer}. Your answer is correct`
+      );
     } else {
-      console.log("hello " + name + defQ);
+      sc = callback(false);
+      console.log(
+        `-----------\nHmm. The right answer is number ${rightAnswer}. Try again`
+      );
+    }
+
+    this.displayScore(sc);
+  };
+
+  Question.prototype.displayScore = function (score) {
+    console.log(`Your score is: ${score}`);
+  };
+
+  const score = function () {
+    let sc = 0;
+    return function (correct) {
+      if (correct) {
+        sc++;
+      }
+      return sc;
+    };
+  };
+
+  const keepScore = score();
+
+  const mainGameFunction = () => {
+    let n = Math.floor(Math.random() * questions.length);
+
+    questions[n].displayQuestion();
+
+    let userAnswer = prompt("enter the correct answer number");
+
+    if (userAnswer !== "exit") {
+      questions[n].checkAnswer(userAnswer, keepScore);
+      mainGameFunction();
+    } else {
+      exitGame();
+      questions[n].displayScore(keepScore());
     }
   };
-}
 
-intQ("designer")("John");
-intQ("musician")("Slav");
-*/
-
-//BIND, CALL & APPLY
-let years = [1995, 1965, 1937, 2005, 2003];
-
-function arrayCalc(arr, fn) {
-  let arrRes = [];
-  arr.forEach(el => {
-    arrRes.push(fn(el));
-  });
-  return arrRes;
-}
-
-function calcAge(el) {
-  let currentDate = new Date().getFullYear();
-  return currentDate - el;
-}
-
-function isFullAge(limit, el) {
-  return el >= limit;
-}
-
-function maxHRate(el) {
-  return Math.round(206.9 - 0.67 * el);
-}
-
-// let ages = arrayCalc(years, calcAge);
-// console.log("TCL: ages", ages);
-
-// let fullAgeJapan = arrayCalc(ages, isFullAge.bind(this, 20));
-// console.log("TCL: fullAgeJapan", fullAgeJapan);
-
-let a = [1, 2, 2, 5, 5, 6, 1, 7, 5, 1];
-let len = a.length;
-
-//for loop
-/*
-for (let i = 0; i < len; i++) {
-  if (b.indexOf(a[i]) === -1) {
-    b.push(a[i]);
+  function exitGame() {
+    console.log(`-----------\nyou leaved the game`);
   }
-}
-*/
 
-//sort
-/*
-a.sort();
-for (let i = 0; i < len; i++) {
-  let sameNum = i - 1;
-  if (a[i] !== a[i + 1]) {
-    b.push(a[i]);
-  }
-}
-
-
-//SET
-b = [...new Set(a)];
-
-console.log("TCL: myNewArr", b);
-*/
-// Day starts at 7, ends at 19
-// You have to find free minimum of 30 minutes windows for a meeting with the second person
-
-let busy1 = [
-  [7.0, 9.2],
-  [11.1, 12.3],
-  [16.4, 17.5]
-];
-let busy2 = [
-  [8.5, 10.3],
-  [11.0, 13.2],
-  [14.3, 16.1],
-  [18.0, 19.0]
-];
-
-//1. Find who starts the day earlier
-// If start1 is less or equal than start2 - main person is 1, else - 2.
-//if 7.0 <= 8.5 = true, main person is 1
-
-//2. Find the end time and start for the each person.
-//If there 30 or more minutes difference between end and start times - add the time to the array of possible timeslots.
-//free1 [9.2 - 11.1, 12.3 - 16.4, 17.5 - 19.0]
-//free2 [10.3 - 11.0, 13.2 - 14.3, 16.1 - 18.0] //not useful data
-
-// Function to calculate the difference
-// (starttime1 - endtime2 - 0.4) * 100 (11.1 - 10.3 = 0.8 - 0.4 = 0.4 * 100 = 40)
-// (16.4 - 16.1)
-//3. Find the end time for the second person.
-// endTime2 [10.3, 13.2, 16.1; 19.0]
-
-//4. If the end time is at least 30 minutes less than the next start time of the first person, add this time slot to the array of available time.
+  mainGameFunction();
+})();
