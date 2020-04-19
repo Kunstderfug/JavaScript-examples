@@ -1,33 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Section 7: Get Ready for the Future: ES6 / ES2015</title>
-        
-        <style>
-            .box {
-                width: 200px;
-                padding: 60px;
-                text-align: center;
-                font-size: 30px;
-                margin-top: 50px;
-            }
-            
-            .green { background-color: green; }
-            .blue { background-color: dodgerblue; }
-            .orange { background-color: orangered; }
-            
-        </style>
-        
-    </head>
 
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <title>Section 7: Get Ready for the Future: ES6 / ES2015</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .boxes {
+            margin: 0 auto;
+        }
+
+        .box {
+            width: 25%;
+            padding: 3em;
+            text-align: center;
+            font-size: 1.5em;
+
+            display: inline-block;
+        }
+
+        .green {
+            background-color: green;
+        }
+
+        .blue {
+            background-color: dodgerblue;
+        }
+
+        .red {
+            background-color: orangered;
+        }
+
+        .select {
+            display: inline-block;
+            width: 100px;
+            padding: 1em;
+            margin: 2em auto;
+            text-align: center;
+        }
+
+        .select:hover {
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
         <h1>Section 7: Get Ready for the Future: ES6 / ES2015</h1>
-        
-        <div class="box green">I'm green!</div>
-        <div class="box blue">I'm blue!</div>
-        <div class="box orange">I'm orange!</div>
-        
-        <script src="script.js"></script>
-    </body>
+        <br>
+        <div class="buttons">
+            <div class="select green">green</div>
+            <div class="select blue">blue</div>
+            <div class="select red">red</div>
+        </div>
+
+        <div class="boxes"></div>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+
 </html>
