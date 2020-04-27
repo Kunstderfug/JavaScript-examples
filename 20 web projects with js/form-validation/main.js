@@ -79,6 +79,7 @@ const checkPassword = (input => {
 const checkPasswordMatch = ((input1, input2) => {
     if (input1.value === input2.value) {
         showSuccess(input2)
+
     } else {
         showError(input2, 'Passwords don\'t match')
     }
@@ -95,3 +96,16 @@ form.addEventListener('submit', function (e) {
     checkPassword(password)
     checkPasswordMatch(password, password2)
 })
+
+const passChecker = (input) => {
+    const pass1 = password.value
+    const pass2 = input.value
+    if (pass1 !== '' && pass2 === pass1) {
+        showSuccess(input)
+    } else {
+        showError(input, 'passwords not matched')
+    }
+}
+
+password.addEventListener('input', e => checkPassword(e.target))
+password2.addEventListener('input', e => passChecker(e.target))
